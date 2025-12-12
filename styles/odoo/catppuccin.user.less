@@ -1,9 +1,9 @@
 /* ==UserStyle==
 @name        Odoo Catppuccin Backend (18/19)
 @namespace   github.com/AustinATTS/userstyles/styles/odoo
-@version     2025.12.10
+@version     2025.12.12
 @description Catppuccin theme for Odoo backend + accounting
-@author      Austin
+@author      Austin Welsh-Graham
 @license     MIT
 
 @preprocessor less
@@ -75,166 +75,514 @@ regexp(".*\\/odoo.*") {
       color: @text !important;
     }
 
-    /* ---------------------------------------
-        TOPBAR (Navbar)
-    --------------------------------------- */
+    /* ------------------------------
+   Full Catppuccin Backend Theme
+   For Odoo 18 / 19 — comprehensive
+   paste inside your #catppuccin(@flavor)
+   ------------------------------ */
+
+    /* Palette variables already come from lib; we rely on:
+       @base, @mantle, @crust, @surface0, @surface1, @text, @subtext0, @subtext1, @overlay0, @accent */
+
+    /* Accessibility helpers */
+    :root {
+      --cat-toast-accent: @@accentColor;
+    }
+
+    /* ------------------------------------------------------
+       Global / base layout
+       ------------------------------------------------------ */
+    .o_web_client, body.o_web_client {
+      background-color: @base !important;
+      color: @text !important;
+      font-family: var(--body-font-family);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Respect Odoo body/bg variables if present */
+    :root, html {
+      color-scheme: none; /* we'll control colors */
+    }
+
+    /* All links */
+    a, a:visited {
+      color: @accent !important;
+    }
+    a:hover, a:focus {
+      color: mix(@accent, @text, 8%) !important;
+      text-decoration: underline;
+    }
+
+    /* Utility contrasts for borders/shadows */
+    .cat-border-1 { border: 1px solid @surface0 !important; }
+    .cat-shadow-sm { box-shadow: 0 2px 6px rgba(0,0,0,0.06) !important; }
+
+    /* ------------------------------------------------------
+       Navbar / Topbar
+       Based on .o_main_navbar in your assets.
+       ------------------------------------------------------ */
     .o_main_navbar {
       background-color: @mantle !important;
       border-bottom: 1px solid @surface0 !important;
-
-      .o_nav_entry, .dropdown-toggle {
-        color: @text !important;
-      }
-
-      .show > .dropdown-toggle,
-      .dropdown-toggle:focus,
-      .dropdown-toggle:hover {
-        color: @accent !important;
-      }
+      color: @text !important;
+      height: var(--o-navbar-height, 46px) !important;
+      align-items: center;
     }
 
-    /* ---------------------------------------
-        SIDEBAR (Discuss / Studio / Menus)
-    --------------------------------------- */
-    .o_action_manager .o_view_controller .o_control_panel {
+    .o_main_navbar .o_menu_brand {
+      color: @accent !important;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      padding-left: 0.5rem;
+    }
+
+    .o_main_navbar .o_nav_entry,
+    .o_main_navbar .o_menu_toggle,
+    .o_main_navbar .dropdown-toggle {
+      color: @text !important;
+      background: transparent !important;
+      border-radius: 6px;
+      padding: 6px 10px;
+    }
+
+    .o_main_navbar .o_nav_entry:hover,
+    .o_main_navbar .o_menu_toggle:hover,
+    .o_main_navbar .dropdown-toggle:hover {
+      background-color: @surface0 !important;
+      color: @text !important;
+    }
+
+    /* Systray icons */
+    .o_main_navbar .o_menu_systray > * {
+      color: @subtext0 !important;
+      background: transparent !important;
+    }
+    .o_main_navbar .o_menu_systray > *:hover {
+      color: @text !important;
+      background: @surface0 !important;
+      border-radius: 6px;
+    }
+
+    /* Dropdown menus from navbar */
+    .o_main_navbar .dropdown-menu {
+      background-color: @crust !important;
+      border: 1px solid @surface0 !important;
+      color: @text !important;
+      min-width: 220px;
+    }
+    .o_main_navbar .dropdown-menu .dropdown-item:hover {
+      background-color: @surface0 !important;
+      color: @text !important;
+    }
+
+    /* App switcher tile */
+    .o_app_switcher .o_app {
+      background: @base !important;
+      border: 1px solid @surface0 !important;
+      color: @text !important;
+    }
+    .o_app_switcher .o_app:hover { border-color: @accent !important; box-shadow: 0 8px 18px rgba(0,0,0,0.06); }
+
+    /* ------------------------------------------------------
+       Left sidebar / app menu / burger menu
+       ------------------------------------------------------ */
+    .o_menu_sections, .o_menu_sections .o_nav_entry {
+      background-color: transparent !important;
+      color: @text !important;
+    }
+
+    .o_menu_sections .o_nav_entry.active,
+    .o_menu_sections .o_nav_entry:focus {
+      background-color: @surface0 !important;
+      color: @text !important;
+      border-left: 3px solid @accent !important;
+      padding-left: calc(var(--NavBar-entry-padding-left, 0.63em) - 2px);
+    }
+
+    /* Compact sidebar entries */
+    .o_menu_sections .o_nav_entry .o_menu_title {
+      color: @text !important;
+    }
+
+    /* ------------------------------------------------------
+       Control panel (filters, group-by, search)
+       ------------------------------------------------------ */
+    .o_control_panel {
       background-color: @mantle !important;
       border-bottom: 1px solid @surface0 !important;
+      padding: 8px 12px !important;
     }
 
-    /* ---------------------------------------
-        MAIN CONTENT AREA
-    --------------------------------------- */
-    .o_content {
+    .o_control_panel .o_searchview,
+    .o_control_panel .o_facet {
       background-color: @base !important;
-      color: @text !important;
-    }
-
-    /* ---------------------------------------
-        FORM VIEWS
-    --------------------------------------- */
-    .o_form_view {
-      background-color: @base !important;
-
-      .o_form_sheet_bg {
-        background-color: @crust !important;
-      }
-      .o_form_sheet {
-        background-color: @mantle !important;
-        border: 1px solid @surface0 !important;
-      }
-
-      label, .o_form_label {
-        color: @text !important;
-      }
-
-      input, textarea, select {
-        background-color: @surface0 !important;
-        border: 1px solid @surface1 !important;
-        color: @text !important;
-      }
-
-      input:focus, textarea:focus, select:focus {
-        border-color: @accent !important;
-        box-shadow: 0 0 0 1px @accent !important;
-      }
-    }
-
-    /* ---------------------------------------
-        LIST VIEW / TREE VIEW
-    --------------------------------------- */
-    table.o_list_view {
-      background-color: @mantle !important;
-      color: @text !important;
-      border-color: @surface0 !important;
-
-      th {
-        background-color: @surface0 !important;
-        color: @subtext1 !important;
-        border-color: @surface1 !important;
-      }
-      td {
-        border-color: @surface0 !important;
-      }
-
-      tr.o_data_row:hover {
-        background-color: @surface1 !important;
-      }
-    }
-
-    /* ---------------------------------------
-        SEARCH BAR / FILTERS
-    --------------------------------------- */
-    .o_searchview {
-      background-color: @surface0 !important;
       border: 1px solid @surface1 !important;
-    }
-
-    .o_searchview_input {
       color: @text !important;
+      border-radius: 6px;
     }
 
-    .o_searchview_more {
-      color: @accent !important;
-    }
-
-    /* ---------------------------------------
-        BUTTONS
-    --------------------------------------- */
-    .btn {
+    .o_control_panel .o_cp_buttons .btn {
       background-color: @surface0 !important;
       border: 1px solid @surface1 !important;
       color: @text !important;
     }
-
-    .btn-primary, .o_form_button_save {
+    .o_control_panel .o_cp_buttons .btn.btn-primary {
       background-color: @accent !important;
+      color: @base !important;
+      border-color: @accent !important;
+    }
+    .o_control_panel .o_cp_buttons .btn.btn-primary:hover { background-color: darken(@accent,5%) !important; }
+
+    /* Pager / pagination */
+    .o_cp_pager button {
+      background: @surface0 !important;
+      color: @text !important;
+      border: 1px solid @surface1 !important;
+    }
+
+    /* ------------------------------------------------------
+       Buttons, inputs, selects, badges
+       ------------------------------------------------------ */
+    button, .btn {
+      background: @surface0 !important;
+      border: 1px solid @surface1 !important;
+      color: @text !important;
+      border-radius: 8px !important;
+      padding: .4rem .7rem !important;
+    }
+    button.btn-primary, .btn-primary {
+      background: @accent !important;
       border-color: @accent !important;
       color: @base !important;
     }
+    button:hover, .btn:hover { filter: brightness(0.98); }
 
-    .btn:hover, .o_form_button_save:hover {
-      filter: brightness(1.1);
+    /* Inputs */
+    .o_input, input, textarea, select {
+      background: @base !important;
+      border: 1px solid @surface1 !important;
+      color: @text !important;
+      border-radius: 6px !important;
+      padding: .45rem .6rem !important;
+    }
+    .o_input:focus, input:focus, textarea:focus, select:focus {
+      outline: none !important;
+      box-shadow: 0 0 0 3px fade(@accent, 8%) !important;
+      border-color: @accent !important;
     }
 
-    /* ---------------------------------------
-        ACCOUNTING & INVOICING
-    --------------------------------------- */
+    /* Badges */
+    .badge, .o_tag, .o_badge {
+      background: @surface0 !important;
+      color: @text !important;
+      border: 1px solid @surface1 !important;
+      padding: .2rem .45rem !important;
+      border-radius: 999px !important;
+    }
+    .badge.cat-accent { background: @accent !important; color: @base !important; }
 
-    /* Invoice list */
-    .o_account_reports_page {
-      background-color: @base !important;
+    /* ------------------------------------------------------
+       List view / table styles
+       ------------------------------------------------------ */
+    .o_list_view, .o_list_table {
+      background-color: transparent !important;
+      color: @text !important;
+      border-collapse: separate;
+    }
+    .o_list_view thead {
+      background: @mantle !important;
+      color: @text !important;
+      border-bottom: 1px solid @surface0 !important;
+    }
+    .o_list_view tbody tr {
+      background: @base !important;
+      border-bottom: 1px solid @surface0 !important;
+    }
+    .o_list_view tbody tr:hover {
+      background: @surface0 !important;
+    }
+    .o_list_view tbody td { color: @text !important; }
+
+    /* Striped / selected rows */
+    .o_list_view.table-striped tbody tr:nth-child(odd) { background: mix(@base, @mantle, 3%) !important; }
+    .o_list_view tbody tr.o_selected_row { background: fade(@accent, 10%) !important; border-left: 3px solid @accent !important; }
+
+    /* Handle / drag cell */
+    .o_handle_cell { background: transparent !important; }
+
+    /* ------------------------------------------------------
+       Kanban view / cards
+       (o_kanban_view / o_kanban_renderer)
+       ------------------------------------------------------ */
+    .o_kanban_view, .o_kanban_renderer {
+      background: transparent !important;
       color: @text !important;
     }
+    .o_kanban_renderer .o_kanban_group {
+      background: @mantle !important;
+      border: 1px solid @surface0 !important;
+      padding: 12px !important;
+      border-radius: 10px;
+    }
+    .o_kanban_renderer .o_kanban_record {
+      background: @surface0 !important;
+      border: 1px solid @surface1 !important;
+      color: @text !important;
+      border-radius: 8px;
+      padding: 10px !important;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+    }
+    .o_kanban_record:hover { transform: translateY(-3px); transition: transform .14s ease; }
 
-    /* Report lines */
-    .o_account_report_line {
-      background-color: @mantle !important;
+    /* Kanban quick create */
+    .o_kanban_quick_create {
+      border: 1px dashed @surface1 !important;
+      background: lighten(@base, 2%) !important;
+    }
+
+    /* Kanban column highlight (drag) */
+    .o_kanban_group.o_highlight, .o_kanban_group.o_kanban_column_highlight {
+      background: mix(@accent, @mantle, 8%) !important;
+      border-color: @accent !important;
+    }
+
+    /* ------------------------------------------------------
+       Form view (sheets, statusbar, labels)
+       Based on .o_form_view and .o_form_sheet found in your assets.
+       ------------------------------------------------------ */
+    .o_form_view {
+      color: @text !important;
+      background: transparent !important;
+    }
+    .o_form_view .o_form_sheet_bg {
+      background: @crust !important;
+      padding: 16px !important;
+      border-radius: 12px;
+    }
+    .o_form_view .o_form_sheet {
+      background: @base !important;
+      border: 1px solid @surface1 !important;
+      border-radius: 8px;
+      padding: 18px !important;
+    }
+
+    /* Form statusbar (sticky) */
+    .o_form_view .o_form_statusbar {
+      background: @mantle !important;
+      border-bottom: 1px solid @surface0 !important;
+      padding: 10px 14px !important;
+    }
+
+    /* Labels and helper text */
+    .o_form_view .o_form_label {
+      color: @subtext1 !important;
+      font-weight: 600;
+    }
+    .o_form_view .o_field_widget .o_input {
+      background: @base !important;
+      color: @text !important;
+      border: 1px solid @surface1 !important;
+    }
+
+    /* Readonly fields */
+    .o_form_view .oe_read_only, .o_form_view .o_form_readonly {
+      color: @subtext0 !important;
+      background: transparent !important;
+    }
+
+    /* Notebook tabs */
+    .o_notebook .nav-link {
+      background: @surface0 !important;
+      border: 1px solid @surface1 !important;
+      color: @text !important;
+      margin-right: 6px;
+      border-radius: 8px;
+    }
+    .o_notebook .nav-link.active {
+      background: @accent !important;
+      color: @base !important;
+      border-color: @accent !important;
+    }
+
+    /* ------------------------------------------------------
+       Modal / Dialog / Popovers
+       ------------------------------------------------------ */
+    .modal-content, .o_dialog {
+      background: @base !important;
+      color: @text !important;
+      border: 1px solid @surface0 !important;
+      border-radius: 12px !important;
+    }
+    .modal-header {
+      background: @mantle !important;
       border-bottom: 1px solid @surface0 !important;
     }
 
-    .o_account_report_line:hover {
-      background-color: @surface1 !important;
-    }
-
-    /* Tax grids, reconciliations */
-    .o_account_reconciliation {
-      background-color: @mantle !important;
-    }
-
-    .o_reconciliation_widget .o_line {
-      background-color: @surface0 !important;
-      border-color: @surface1 !important;
-    }
-
-    /* Journal dashboard */
-    .o_account_journal_dashboard {
-      background-color: @mantle !important;
+    /* Popovers, tooltips */
+    .popover, .tooltip {
+      background: @mantle !important;
+      color: @text !important;
       border: 1px solid @surface0 !important;
     }
 
-    .o_account_journal_dashboard .o_box {
-      background-color: @surface0 !important;
-      border-color: @surface1 !important;
+    /* ------------------------------------------------------
+       Breadcrumbs, headers, titles
+       ------------------------------------------------------ */
+    .breadcrumb, .o_breadcrumb {
+      background: transparent !important;
+      color: @subtext0 !important;
     }
+    .breadcrumb .breadcrumb-item.active { color: @accent !important; }
+
+    /* Page headers */
+    .o_view_manager .o_view_nocontent h1, .o_view_manager h1, .o_form_view .oe_title h1 {
+      color: @text !important;
+      font-weight: 700;
+    }
+
+    /* ------------------------------------------------------
+       Chatter / Mail / Discuss (messages / composer)
+       ------------------------------------------------------ */
+    .o_Chatter, .o_MessageList, .o_Composer {
+      background: @mantle !important;
+      border: 1px solid @surface0 !important;
+      color: @text !important;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .o_Message {
+      background: @surface0 !important;
+      border: 1px solid @surface1 !important;
+      border-radius: 8px;
+      padding: 8px;
+    }
+    .o_Message_author { color: @accent !important; font-weight: 700; }
+
+    /* Composer input */
+    .o_Composer .o_input {
+      background: @base !important;
+      border: 1px solid @surface1 !important;
+    }
+
+    /* ------------------------------------------------------
+       Accounting / reconciliation widgets (targeted)
+       ------------------------------------------------------ */
+    .o_account_reconciliation {
+      background: transparent !important;
+    }
+    .o_account_reco_line {
+      background: @mantle !important;
+      border: 1px solid @surface0 !important;
+      color: @text !important;
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+    .o_account_reco_widget {
+      background: @surface0 !important;
+      border: 1px solid @surface1 !important;
+      border-radius: 8px;
+    }
+    .o_account_reco_widget:hover { background: @surface1 !important; }
+
+    /* Bank statement lines / amounts */
+    .o_list_monetary, .o_field_monetary {
+      color: @text !important;
+      font-weight: 600;
+    }
+
+    /* ------------------------------------------------------
+       Pivot / Graph / Gantt / Spreadsheet views
+       (moderate styling to maintain readability)
+       ------------------------------------------------------ */
+    .o_pivot_view, .o_graph_view, .o_gantt_view, .o_spreadsheet_view {
+      background: @base !important;
+      color: @text !important;
+    }
+
+    /* Graph axes / legend */
+    .o_graph .legend, .o_graph_legend {
+      color: @subtext1 !important;
+    }
+
+    /* Gantt lanes */
+    .o_gantt_view .o_gantt_row {
+      background: @mantle !important;
+      border-bottom: 1px solid @surface0 !important;
+    }
+
+    /* Spreadsheet header / cells */
+    .o_sheet_table thead {
+      background: @mantle !important;
+    }
+    .o_sheet_table td {
+      border: 1px solid @surface1 !important;
+    }
+
+    /* ------------------------------------------------------
+       Studio (editor) — make the editor feel native
+       ------------------------------------------------------ */
+    .o_web_studio_sidebar, .o_web_studio_editor {
+      background: @mantle !important;
+      color: @text !important;
+      border-left: 1px solid @surface0 !important;
+    }
+    .o_web_studio_sidebar .o_web_studio_selector_section {
+      background: @base !important;
+      border: 1px solid @surface1 !important;
+    }
+
+    /* ------------------------------------------------------
+       Notifications / Toasts
+       ------------------------------------------------------ */
+    .o_notifications .toast {
+      background: @mantle !important;
+      color: @text !important;
+      border: 1px solid @surface0 !important;
+    }
+    .o_notifications .toast .toast-header {
+      background: @crust !important;
+      color: @text !important;
+    }
+
+    /* ------------------------------------------------------
+       Statusbar / progress / rotting bars
+       ------------------------------------------------------ */
+    .o_field_statusbar .o_statusbar_status {
+      background: @mantle !important;
+      color: @text !important;
+    }
+    .o_field_statusbar .o_statusbar_status .o_arrow_button {
+      background: @surface0 !important;
+      border: 1px solid @surface1 !important;
+    }
+
+    /* ------------------------------------------------------
+       Small responsive / touch improvements
+       ------------------------------------------------------ */
+    @media (max-width: 767.98px) {
+      .o_main_navbar { padding: 6px !important; height: 44px; }
+      .o_menu_sections .o_nav_entry { padding: 8px 10px !important; }
+      .o_form_view .o_form_sheet { padding: 14px !important; }
+    }
+
+    /* ------------------------------------------------------
+       Final polish — consistent transitions & focus outlines
+       ------------------------------------------------------ */
+    * {
+      transition: background-color .12s ease, color .12s ease, border-color .12s ease !important;
+    }
+    :focus {
+      outline: none !important;
+      box-shadow: 0 0 0 4px fade(@accent, 8%) !important;
+    }
+
+    /* ------------------------------------------------------
+       Accent helpers (convenience classes)
+       ------------------------------------------------------ */
+    .cat-accent-bg { background-color: @accent !important; color: @base !important; }
+    .cat-accent-border { border: 1px solid @accent !important; }
+
+    /* End of full backend theme */
   }
 }
